@@ -209,7 +209,7 @@ def run(
                         class_ = int(output[4])
                         identity = output[-1]
                         with open(txt_path + '.txt', 'a') as f:
-                            f.write(f'{frame_idx} {identity} {bbox_left} {bbox_top} {bbox_w} {bbox_h} {class_} {names[class_]}'  # label format
+                            f.write(f'{frame_idx} {identity} {bbox_left} {bbox_top} {bbox_w} {bbox_h} {class_} {names[class_]}' + '\n')  # label format
                 #close deep sort 
                 
                 annotator = Annotator(im0, line_width=line_thickness, example=str(names))    
