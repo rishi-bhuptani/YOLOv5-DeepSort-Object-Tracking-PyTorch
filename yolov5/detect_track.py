@@ -178,6 +178,7 @@ def run(
                 ##variables for boundig boxes
                 bbox_xywh = []
                 confs = []
+                clss = det[:, 5]
                 ## Adapt detections to deep sort input format
                 for *xyxy, conf, cls in det:
                     x_c, y_c, bbox_w, bbox_h = bbox_rel(*xyxy)
@@ -189,7 +190,7 @@ def run(
                 confss = torch.Tensor(confs)
                 
                 # Pass detections to deepsort
-                outputs = deepsort.update(xywhs, confss, im0)
+                outputs = deepsort.update(xywhs, confss, clss, im0)
                 
                 # draw boxes for visualization
                 if len(outputs) > 0:
@@ -205,10 +206,10 @@ def run(
                         bbox_top = output[1]
                         bbox_w = output[2]
                         bbox_h = output[3]
+                        class_ = int(output[4])
                         identity = output[-1]
-                        with open(txt_path, 'a') as f:
-                            f.write(('%g ' * 10 + '\n') % (frame_idx, identity, bbox_left,
-                                                           bbox_top, bbox_w, bbox_h, -1, -1, -1, -1))  # label format
+                        with open(txt_path + '.txt', 'a') as f:
+                            f.write(f'{frame_idx} {identity} {bbox_left} {bbox_top} {bbox_w} {bbox_h} {class_} {names[class_]}'  # label format
                 #close deep sort 
                 
                 annotator = Annotator(im0, line_width=line_thickness, example=str(names))    
