@@ -192,7 +192,7 @@ def run(
                 confss = torch.Tensor(confs)
                 
                 # Pass detections to deepsort
-                outputs = deepsort.update(xywhs, confss, clss, im0)
+                outputs = deepsort.update(xywhs.cpu(), confss.cpu(), clss.cpu(), im0)
                 
                 # draw boxes for visualization
                 if len(outputs) > 0:
